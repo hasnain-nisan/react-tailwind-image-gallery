@@ -1,42 +1,34 @@
+import {useState, useEffect} from 'react'
 import './App.css';
 
+import ImageCard from './components/ImageCard';
+
 function App() {
+
+  const [images, setImages] = useState([])
+  const [isLoading, setIsLoading] = useState(true)
+  const [search, setSearch] = useState('')
+
+  useEffect(() => {
+    fetch(`https://pixabay.com/api/?key=${process.env.REACT_APP_PIXABAY_API_KEY}&q=${search}&image_type=photo&pretty=true`)
+      .then(res => res.json())
+      .then(data => {
+        setImages(data.hits)
+        setIsLoading(false)
+      })
+      .catch(err => console.log(err))
+  }, [])
+
   return (
-    <>
-      <div className="max-w-sm rounded overflow-hidden shadow-lg">
-        <img src="https://source.unsplash.com/random" alt="" className="w-full"/>
-        <div className="px-6 py-6">
-          <div className="font-bold text-purple-600 text-xl mb-2">
-            Photo by Jhon Doe
-          </div>
-          <ul>
-            <li>
-              <strong>Views:</strong>
-              4000
-            </li>
-            <li>
-              <strong>Downloads:</strong>
-              4000
-            </li>
-            <li>
-              <strong>Likes:</strong>
-              4000
-            </li>
-          </ul>
-          <div className="px-6 py-4">
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-              #tag1
-            </span>
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-              #tag2
-            </span>
-            <span className="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2">
-              #tag3
-            </span>
-          </div>
-        </div>
-      </div>
-    </>
+    <div className="container mx-auto">
+      <div className="grid grid-cols-4 gap-3">
+        {
+          images.map(image => {
+            return <ImageCard key={image.id} image={image} />
+          })
+        }
+      </div> 
+    </div>
   );
 }
 
