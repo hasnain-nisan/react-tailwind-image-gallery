@@ -1,7 +1,9 @@
 import {useState, useEffect} from 'react'
 import './App.css';
 
+import ImageSearch from './components/ImageSearch';
 import ImageCard from './components/ImageCard';
+
 
 function App() {
 
@@ -17,17 +19,20 @@ function App() {
         setIsLoading(false)
       })
       .catch(err => console.log(err))
-  }, [])
+  }, [search])
 
   return (
     <div className="container mx-auto">
-      <div className="grid grid-cols-4 gap-3">
+
+    <ImageSearch searchText={(text) => setSearch(text)} />
+
+      {isLoading ? <h1 className="text-6xl text-center mx-auto mt-32">Loading...</h1> : <div className="grid grid-cols-3 gap-4">
         {
           images.map(image => {
             return <ImageCard key={image.id} image={image} />
           })
         }
-      </div> 
+      </div> }
     </div>
   );
 }
