@@ -24,7 +24,9 @@ function App() {
   return (
     <div className="container mx-auto">
 
-    <ImageSearch searchText={(text) => setSearch(text)} />
+     <ImageSearch searchText={(text) => setSearch(text)} />
+
+     {!isLoading && images.length === 0 && <h1 className="text-4xl text-center mx-auto mt-32">No images found.</h1> }
 
       {isLoading ? <h1 className="text-6xl text-center mx-auto mt-32">Loading...</h1> : <div className="grid grid-cols-3 gap-4">
         {
